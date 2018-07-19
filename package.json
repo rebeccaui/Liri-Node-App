@@ -1,0 +1,24 @@
+{
+  "name": "Liri-Node-App",
+  "version": "1.0.0",
+  "description": "LIRI (Language Interpretation anf Recognition Interface) is a command line Node app. Like SIRI, this application can grab information from different places using a set of parameters given by the user. LIRI uses APIs and Node programs to display your latest tweets, retrieve music from Spotify, and display movie information from OMDB!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rwieberdink/Liri-Node-App.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rwieberdink/Liri-Node-App/issues"
+  },
+  "homepage": "https://github.com/rwieberdink/Liri-Node-App#readme",
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "node-spotify-api": "^1.0.7"
+  }
+}
