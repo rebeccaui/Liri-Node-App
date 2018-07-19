@@ -22,16 +22,6 @@ function displayTweets() {
 
 }
 
-/*
-* Title of the movie.
-* Year the movie came out.
-* IMDB Rating of the movie.
-* Rotten Tomatoes Rating of the movie.
-* Country where the movie was produced.
-* Language of the movie.
-* Plot of the movie.
-* Actors in the movie.
-*/
 function displayMovie() {
     var movie = process.argv[3];
     request("https://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy", function(error, response, body) {
@@ -39,7 +29,32 @@ function displayMovie() {
             console.log("OMDB request DENIED, suckah!");
         } else if (!error && response.statusCode === 200) {
             var movieData = JSON.parse(body);
-            console.log("Movie Title: " + movieData.Title);
+            console.log("Movie Title: " + movieData.Title + 
+                    "\nYear Released: " + movieData.Year + 
+                    "\nIMDB Rating: " + movieData.imdbRating +
+                    "\nRotten Tomatoes: " + movieData.Ratings[1].Value + 
+                    "\nCountry: " + movieData.Country + 
+                    "\nLanguage: " + movieData.Language + 
+                    "\nPlot: " + movieData.Plot + 
+                    "\nActors: " + movieData.Actors);
+        }
+    });
+}
+
+function displayFillerMovie() {
+    request("https://www.omdbapi.com/?t=mr+nobody&y=&plot=short&apikey=trilogy", function(error, response, body) {
+        if (error) {
+            console.log("OMDB request denied. Whoops.");
+        } else if (!error && response.statusCode === 200) {
+            var movieData = JSON.parse(body);
+            console.log("Movie Title: " + movieData.Title + 
+                    "\nYear Released: " + movieData.Year + 
+                    "\nIMDB Rating: " + movieData.imdbRating +
+                    "\nRotten Tomatoes: " + movieData.Ratings[1].Value + 
+                    "\nCountry: " + movieData.Country + 
+                    "\nLanguage: " + movieData.Language + 
+                    "\nPlot: " + movieData.Plot + 
+                    "\nActors: " + movieData.Actors);
         }
     });
 }
@@ -56,13 +71,14 @@ else if (arg1 === "spotify-this-song" && arg2 === " ") {
     console.log("User command is accepted, but only for The Sign");
 }
 //if the user enters a movie name as arg2
-else if (arg1 === "movie-this" && arg2 !== " ") {
+else if (arg1 === "movie-this" && arg2) {
     console.log("User command is accepted.");
     displayMovie();
 } 
 //if the user does NOT enter a movie name
-else if (arg1 === "movie-this" && arg2 === " ") {
-    console.log("User command is accepted.");
+else if (arg1 === "movie-this" && !arg2) {
+    console.log("Whoops! User did not provide a movie title.");
+    displayFillerMovie();
 } 
 //if the user wants to.......
 else if (arg1 === "do-what-it-says") {
