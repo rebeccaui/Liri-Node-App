@@ -4,7 +4,7 @@ var fs = require("fs");
 var request = require("request");
 var keys = require("./keys.js");
 var Twitter = require("twitter");
-var Spotify = require("spotify");
+var Spotify = require("node-spotify-api");
 
 var arg1 = process.argv[2];
 var arg2 = process.argv[3];
@@ -32,7 +32,37 @@ function displayTweets() {
 
 function displaySpotify() {
     var spotify = new Spotify(keys.spotify);
+    spotify.search({type: 'track', query: process.argv[3], limit: 3}, function(error, data) {
+        if (error) {
+            return console.log('A freaking error occurred: ' + error);
+        } else {
+            console.log("That song is...COOL!");
+            for (var i = 0; i <= 2; i++) {
+                console.log("Artists: " + data[i].artists[0] + 
+                            "\nSong: " + data[i].name +
+                            "\nPreview: " + data[i].preview_url +
+                            "\nAlbum: " + data[i].album);
+            }
+            
+        }
+    });
+}
 
+function displayFillerSpotify() {
+    var spotify = new Spotify(keys.spotify);
+    spotify.search({type: 'track', query: "the-sign", limit: 3}, function(error, data) {
+        if (error) {
+            return console.log('A freaking error occurred: ' + error);
+        } else {
+            console.log("That song is...COOL!");
+            for (var i = 0; i <= 3; i++) {
+                console.log("Artists: " + data.tracks[i].artists + 
+                            "\nSong: " + data.tracks[i].name +
+                            "\nPreview: " + data.tracks[i].preview_url +
+                            "\nAlbum: " + data.tracks[i].album);
+            }
+        }
+    });
 }
 
 function displayMovie() {
@@ -78,11 +108,13 @@ if (arg1 === "my-tweets") {
     displayTweets();
 } 
 //if the user wants to look up a song (artist(s), song name, preview link, album)
-else if (arg1 === "spotify-this-song" && arg2 !== " ") {
+else if (arg1 === "spotify-this-song" && arg2) {
     console.log("User command is accepted.");
+    displaySpotify();
 } //if the user leaves arg2 blank
-else if (arg1 === "spotify-this-song" && arg2 === " ") {
+else if (arg1 === "spotify-this-song" && !arg2) {
     console.log("User command is accepted, but only for The Sign");
+    displayFillerSpotify();
 }
 //if the user enters a movie name as arg2
 else if (arg1 === "movie-this" && arg2) {

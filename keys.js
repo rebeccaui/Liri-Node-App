@@ -12,4 +12,4 @@ var spotify = {
   secret: process.env.SPOTIFY_SECRET
 };
 
-module.exports = {twitter, spotify,};
+module.exports = {twitter, spotify};
