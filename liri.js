@@ -2,23 +2,36 @@ require("dotenv").config();
 
 var fs = require("fs");
 var request = require("request");
-/*
-var spotify = new Spotify(keys.spotify);
-var client = new Twitter(keys.twitter);
-
-fs.readFile("keys.js", "utf-8", function(error, data) {
-    if (error) {
-      return console.log("Failed to read keys.js" + error);
-    } else {
-        console.log(data);
-    }
-});
-*/
+var keys = require("./keys.js");
+var Twitter = require("twitter");
+var Spotify = require("spotify");
 
 var arg1 = process.argv[2];
 var arg2 = process.argv[3];
 
 function displayTweets() {
+    //URL leads to LIRINodeTime's profile timeline
+    var client = new Twitter(keys.twitter);
+    var twitterArray = [];
+    var params = {screen_name: "rwieberdink1",
+                exclude_replies: true,
+                count: 20,
+                };
+    client.get("statuses/user_timeline", params, function(error, tweets, response) {
+        if (!error) {
+            for (var i =0; i <= 19; i++) {
+                twitterArray.push(tweets);
+                console.log("Created at: " + tweets[i].created_at +
+                            "\n" + tweets[i].text +
+                            "\n" + tweets[i].user.name + "\n");
+            }
+            
+        }
+    });
+} 
+
+function displaySpotify() {
+    var spotify = new Spotify(keys.spotify);
 
 }
 
@@ -62,6 +75,7 @@ function displayFillerMovie() {
 //if the user wants to view their last 20 tweets and post dates
 if (arg1 === "my-tweets") {
     console.log("User command is accepted.");
+    displayTweets();
 } 
 //if the user wants to look up a song (artist(s), song name, preview link, album)
 else if (arg1 === "spotify-this-song" && arg2 !== " ") {
