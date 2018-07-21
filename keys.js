@@ -1,4 +1,4 @@
-console.log('~keys are loaded~');
+console.log('~~~LIRI successfully loaded~~~');
 
 var twitter = {
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
