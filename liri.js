@@ -13,48 +13,43 @@ for(var i = 4; i < process.argv.length; i++) {
     var arg2 = arg2 + " " + process.argv[i];
     }
 
+function okayLIRI() {
     //if the user wants to view their last 20 tweets and post dates
-if (arg1 === "my-tweets") {
-    displayTweets();
-} 
-//if the user wants to look up a song (artist(s), song name, preview link, album)
-else if (arg1 === "spotify-this-song" && arg2) {
-    displaySpotify();
-} //if the user leaves arg2 blank
-else if (arg1 === "spotify-this-song" && !arg2) {
-    displayFillerSpotify();
+    if (arg1 === "my-tweets") {
+        displayTweets();
+    } 
+    //if the user wants to look up a song (artist(s), song name, preview link, album)
+    else if (arg1 === "spotify-this-song" && arg2) {
+        displaySpotify();
+    } //if the user leaves arg2 blank
+    else if (arg1 === "spotify-this-song" && !arg2) {
+        displayFillerSpotify();
+    }
+    //if the user enters a movie name as arg2
+    else if (arg1 === "movie-this" && arg2) {
+        displayMovie();
+    } 
+    //if the user does NOT enter a movie name
+    else if (arg1 === "movie-this" && !arg2) {
+        displayFillerMovie();
+    } 
+    //if the user wants to.......
+    else if (arg1 === "do-what-it-says") {
+        readText();
+    }
+    else {
+        //when the user enters an invalid command
+        console.log("Hello! I am LIRI." + 
+                    "\nThink of me as your pocket dictionary!" +
+                    "\nUse your computer's command line to get info about..." +
+                    "\nMusic: node liri.js spotify-this-song song-title" +
+                    "\nMy Tweets: node liri.js my-tweets" +
+                    "\nMovies: node liri.js movie-this movie-title" +
+                    "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    }
 }
-//if the user enters a movie name as arg2
-else if (arg1 === "movie-this" && arg2) {
-    displayMovie();
-} 
-//if the user does NOT enter a movie name
-else if (arg1 === "movie-this" && !arg2) {
-    displayFillerMovie();
-} 
-//if the user wants to.......
-else if (arg1 === "do-what-it-says") {
-    fs.readFile("random.txt", "utf-8", function(error, data) {
-        if (error) {
-          return console.log("Failed to execute do-what-it-says: " + error);
-        } else {
-            var string = data.split(",");
-            console.log("Argument 1: " + data[0] + "Argument 2: " + data[1]);
-            console.log("User command do-what-it-says is accepted.");
-        }
-    });
-}
-else {
-    //when the user enters an invalid command
-    console.log("Hello! I am LIRI." + 
-                "\nThink of me as your pocket dictionary!" +
-                "\nUse your computer's command line to get info about..." +
-                "\nMusic: node liri.js spotify-this-song song-title" +
-                "\nMy Tweets: node liri.js my-tweets" +
-                "\nMovies: node liri.js movie-this movie-title" +
-                "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-}
-
+okayLIRI();
+    
 function displayTweets() {
     //URL leads to LIRINodeTime's profile timeline
     var client = new Twitter(keys.twitter);
@@ -82,7 +77,7 @@ function displaySpotify() {
         if (error) {
             return console.log("Error while retrieving a user's song: " + error);
         } else {
-            console.log("Here is your song: ");
+            console.log("Here are some songs that matched your search: ");
             for (var i = 0; i <= 2; i++) {
                 var songInfo = data.tracks.items[i];
                 console.log("-----------------------------------------" +
@@ -145,6 +140,21 @@ function displayFillerMovie() {
                     "\nLanguage: " + movieData.Language + 
                     "\nPlot: " + movieData.Plot + 
                     "\nActors: " + movieData.Actors);
+        }
+    });
+}
+
+function readText() {
+    fs.readFile("random.txt", "utf-8", function(error, data) {
+        if (error) {
+        return console.log("Failed to execute do-what-it-says: " + error);
+        } else {
+            var textCommand = data.split(",");
+            arg1 = textCommand[0].trim();
+            arg2 = textCommand[1].trim();
+            console.log("Search: " + arg1 + 
+                        "\nTitle: " + arg2);
+            okayLIRI();
         }
     });
 }
