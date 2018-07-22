@@ -13,8 +13,9 @@ for(var i = 4; i < process.argv.length; i++) {
     var arg2 = arg2 + " " + process.argv[i];
     }
 
+//LIRI deciphers through a user's requests
 function okayLIRI() {
-    //if the user wants to view their last 20 tweets and post dates
+    //if the user wants to view their last 20 tweets with timestamps
     if (arg1 === "my-tweets") {
         displayTweets();
     } 
